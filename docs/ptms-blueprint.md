@@ -514,5 +514,3 @@ This keeps the MVP practical, focused, and aligned with the platform’s purpose
 3. Implement the TradeCase as the central domain model
 4. Add the monitoring and process-tracking modules around the trade case
 5. Layer notifications, auditability, and reporting iteratively
-
-This strategy keeps the system focused on foreign-trade monitoring rather than expanding into general ERP scope too early.
