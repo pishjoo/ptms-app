@@ -1,0 +1,37 @@
+import type { TradeCaseStateSnapshot } from '../state/trade-case-state-snapshot';
+import type { TradeCaseRule, TradeCaseRuleEvaluationResult } from './trade-case-rule';
+import { BusinessPriority } from '../state/business-priority';
+
+/**
+ * Placeholder rule for remaining allocation monitoring.
+ */
+export class RemainingAllocationRule implements TradeCaseRule {
+  /**
+   * Stable identifier for the rule.
+   */
+  public readonly id = 'remaining-allocation-rule';
+
+  /**
+   * Display name for the rule.
+   */
+  public readonly name = 'Remaining Allocation';
+
+  /**
+   * Human-readable description of the rule purpose.
+   */
+  public readonly description = 'Monitors remaining allocation thresholds for a trade case.';
+
+  /**
+   * Evaluates the trade case against the rule.
+   */
+  public evaluate(_snapshot: TradeCaseStateSnapshot): TradeCaseRuleEvaluationResult {
+    // TODO
+    return {
+      ruleId: this.id,
+      ruleName: this.name,
+      passed: true,
+      message: 'Rule not implemented yet.',
+      priority: BusinessPriority.LOW,
+    };
+  }
+}
