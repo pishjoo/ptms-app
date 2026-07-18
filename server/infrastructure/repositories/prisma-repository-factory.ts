@@ -5,18 +5,20 @@ import type { AllocationRepository } from '@/server/domain/repositories/allocati
 import type { OriginRepository } from '@/server/domain/repositories/origin-repository';
 import type { DeclarationRepository } from '@/server/domain/repositories/declaration-repository';
 import type { CommitmentRepository } from '@/server/domain/repositories/commitment-repository';
+import type { ImportSessionRepository } from '@/server/domain/import-session/repositories/import-session-repository';
 import { PrismaTradeCaseRepository, type PrismaTradeCaseClient } from './prisma-trade-case-repository';
 import { PrismaRegistrationRepository, type PrismaRegistrationClient } from './prisma-registration-repository';
 import { PrismaAllocationRepository, type PrismaAllocationClient } from './prisma-allocation-repository';
 import { PrismaOriginRepository, type PrismaOriginClient } from './prisma-origin-repository';
 import { PrismaDeclarationRepository, type PrismaDeclarationClient } from './prisma-declaration-repository';
 import { PrismaCommitmentRepository, type PrismaCommitmentClient } from './prisma-commitment-repository';
+import { PrismaImportSessionRepository, type PrismaImportSessionClient } from './prisma-import-session-repository';
 
 /**
  * Combined Prisma client that satisfies all repository client interfaces.
  * This allows a single Prisma instance to be passed to the factory.
  */
-export type FullPrismaClient = PrismaTradeCaseClient & PrismaRegistrationClient & PrismaAllocationClient & PrismaOriginClient & PrismaDeclarationClient & PrismaCommitmentClient;
+export type FullPrismaClient = PrismaTradeCaseClient & PrismaRegistrationClient & PrismaAllocationClient & PrismaOriginClient & PrismaDeclarationClient & PrismaCommitmentClient & PrismaImportSessionClient;
 
 /**
  * Concrete factory that creates Prisma-backed repository instances.
@@ -32,6 +34,7 @@ export class PrismaRepositoryFactory implements RepositoryFactory {
   private readonly originRepo: OriginRepository;
   private readonly declarationRepo: DeclarationRepository;
   private readonly commitmentRepo: CommitmentRepository;
+  private readonly importSessionRepo: ImportSessionRepository;
 
   constructor(prisma: FullPrismaClient) {
     this.tradeCaseRepo = new PrismaTradeCaseRepository(prisma);
@@ -40,6 +43,7 @@ export class PrismaRepositoryFactory implements RepositoryFactory {
     this.originRepo = new PrismaOriginRepository(prisma);
     this.declarationRepo = new PrismaDeclarationRepository(prisma);
     this.commitmentRepo = new PrismaCommitmentRepository(prisma);
+    this.importSessionRepo = new PrismaImportSessionRepository(prisma);
   }
 
   public createTradeCaseRepository(): TradeCaseRepository {
@@ -64,6 +68,10 @@ export class PrismaRepositoryFactory implements RepositoryFactory {
 
   public createCommitmentRepository(): CommitmentRepository {
     return this.commitmentRepo;
+  }
+
+  public createImportSessionRepository(): ImportSessionRepository {
+    return this.importSessionRepo;
   }
 }
 

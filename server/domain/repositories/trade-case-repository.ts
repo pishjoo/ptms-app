@@ -8,6 +8,16 @@ import type { TradeCaseAggregate } from '@/server/domain/trade-case/entities/tra
  */
 export interface TradeCaseRepository {
   /**
+   * Persist a new trade case.
+   */
+  create(tradeCase: TradeCaseAggregate): Promise<TradeCaseAggregate>;
+
+  /**
+   * Update an existing trade case.
+   */
+  update(tradeCase: TradeCaseAggregate): Promise<TradeCaseAggregate>;
+
+  /**
    * Find a single trade case by its internal ID.
    */
   findById(id: string): Promise<TradeCaseAggregate | null>;

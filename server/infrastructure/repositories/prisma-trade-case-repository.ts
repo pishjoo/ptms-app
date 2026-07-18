@@ -7,6 +7,35 @@ import type { TradeCaseAggregate } from '@/server/domain/trade-case/entities/tra
  */
 export interface PrismaTradeCaseClient {
   tradeCase: {
+    create(args: {
+      data: {
+        id?: string;
+        companyId: string;
+        createdById?: string | null;
+        title: string;
+        referenceNo?: string | null;
+        type: string;
+        status: string;
+        priority: string;
+        summary?: string | null;
+        externalReference?: string | null;
+        lastActivityAt?: Date | null;
+      };
+    }): Promise<PrismaTradeCaseRow>;
+
+    update(args: {
+      where: { id: string };
+      data: {
+        title?: string;
+        referenceNo?: string | null;
+        status?: string;
+        priority?: string;
+        summary?: string | null;
+        externalReference?: string | null;
+        lastActivityAt?: Date | null;
+      };
+    }): Promise<PrismaTradeCaseRow>;
+
     findUnique(args: {
       where: { id?: string; referenceNo?: string };
       include: {
@@ -55,6 +84,37 @@ export interface PrismaTradeCaseRow {
  */
 export class PrismaTradeCaseRepository implements TradeCaseRepository {
   constructor(private readonly prisma: PrismaTradeCaseClient) {}
+
+  public async create(tradeCase: TradeCaseAggregate): Promise<TradeCaseAggregate> {
+    const result = await this.prisma.tradeCase.create({
+      data: {
+        id: tradeCase.id,
+        companyId: '', // Must be provided by caller; aggregate carries it
+        title: tradeCase.companyName,
+        referenceNo: tradeCase.registrationNumber,
+        type: 'IMPORT',
+        status: tradeCase.status,
+        priority: 'MEDIUM',
+        summary: null,
+        externalReference: null,
+        lastActivityAt: tradeCase.lastActivityAt,
+      },
+    });
+
+    return this.toAggregate(result);
+  }
+
+  public async update(tradeCase: TradeCaseAggregate): Promise<TradeCaseAggregate> {
+    const result = await this.prisma.tradeCase.update({
+      where: { id: tradeCase.id },
+      data: {
+        status: tradeCase.status,
+        lastActivityAt: tradeCase.lastActivityAt,
+      },
+    });
+
+    return this.toAggregate(result);
+  }
 
   public async findById(id: string): Promise<TradeCaseAggregate | null> {
     const result = await this.prisma.tradeCase.findUnique({

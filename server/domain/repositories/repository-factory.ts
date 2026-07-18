@@ -4,6 +4,7 @@ import type { AllocationRepository } from './allocation-repository';
 import type { OriginRepository } from './origin-repository';
 import type { DeclarationRepository } from './declaration-repository';
 import type { CommitmentRepository } from './commitment-repository';
+import type { ImportSessionRepository } from '@/server/domain/import-session/repositories/import-session-repository';
 
 /**
  * Factory interface for creating repository instances.
@@ -29,6 +30,9 @@ export interface RepositoryFactory {
 
   /** Create a CommitmentRepository. */
   createCommitmentRepository(): CommitmentRepository;
+
+  /** Create an ImportSessionRepository. */
+  createImportSessionRepository(): ImportSessionRepository;
 }
 
 export default RepositoryFactory;
